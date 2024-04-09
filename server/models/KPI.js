@@ -3,7 +3,17 @@ import { loadType } from "mongoose-currency"
 const Schema = mongoose.Schema
 loadType(mongoose)
 const daySchema = new Schema({
-    
+    date:String,
+    revenue:{
+        type: mongoose.Types.Currency,
+        currency: "USD",
+        get: (v) => v / 100
+    },
+    expenses:{
+        type: mongoose.Types.Currency,
+        currency: "USD",
+        get: (v) => v / 100
+    },
 })
 const monthSchema = new Schema({
     month:String,
@@ -56,7 +66,8 @@ const KPISchema = new Schema({
     },
     monthlyData:[monthSchema],
     dailyData:[daySchema]
-} 
+},
+{ timestamps: true ,toJSON: { getters: true }}
 )
 const KPI = mongoose.model("KPI", KPISchema);
 export default KPI;
